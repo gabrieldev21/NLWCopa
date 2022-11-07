@@ -57,7 +57,7 @@ export async function guessRoutes(fastify: FastifyInstance) {
 
       if (guess) {
         return reply.status(400).send({
-          message: "You already sent a guess to this game on this pool",
+          message: "You already sent a guess to this game on this pool.",
         });
       }
 
@@ -75,8 +75,8 @@ export async function guessRoutes(fastify: FastifyInstance) {
 
       if (game.date < new Date()) {
         return reply.status(400).send({
-          message: "You cannot send guesses after the game date.",
-        });
+          message: "You cannot send guesses after the game date."
+        })
       }
 
       await prisma.guess.create({

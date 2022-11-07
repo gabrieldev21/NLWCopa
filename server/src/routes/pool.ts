@@ -1,8 +1,7 @@
-import { FastifyInstance } from "fastify";
-import shortUniqueId from "short-unique-id";
 import { z } from "zod";
-
+import { FastifyInstance } from "fastify";
 import { prisma } from "../lib/prisma";
+import ShortUniqueId from "short-unique-id";
 import { authenticate } from "../plugins/authenticate";
 
 export async function poolRoutes(fastify: FastifyInstance) {
@@ -18,11 +17,13 @@ export async function poolRoutes(fastify: FastifyInstance) {
     });
 
     const { title } = createPoolBody.parse(request.body);
-    const generate = new shortUniqueId({ length: 6 });
+
+    const generate = new ShortUniqueId({ length: 6 });
     const code = String(generate()).toUpperCase();
 
     try {
       await request.jwtVerify();
+
       await prisma.pool.create({
         data: {
           title,
@@ -81,7 +82,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
 
       if (pool.participants.length > 0) {
         return reply.status(400).send({
-          message: "You already joined this pool",
+          message: "You are already a join this pool.",
         });
       }
 
@@ -102,6 +103,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
           userId: request.user.sub,
         },
       });
+
       return reply.status(201).send();
     }
   );
@@ -129,6 +131,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
           participants: {
             select: {
               id: true,
+
               user: {
                 select: {
                   avatarUrl: true,
@@ -159,6 +162,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
       const getPoolParams = z.object({
         id: z.string(),
       });
+
       const { id } = getPoolParams.parse(request.params);
 
       const pool = await prisma.pool.findUnique({
@@ -174,6 +178,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
           participants: {
             select: {
               id: true,
+
               user: {
                 select: {
                   avatarUrl: true,

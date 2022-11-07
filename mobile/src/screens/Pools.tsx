@@ -8,11 +8,11 @@ import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { EmptyPoolList } from "../components/EmptyPoolList";
 import { Loading } from "../components/Loading";
-import { PoolCard, PoolPropsCard } from "../components/PoolCard";
+import { PoolCard, PoolCardProps } from "../components/PoolCard";
 
 export function Pools() {
   const [isLoading, setIsLoading] = useState(true);
-  const [pools, setPools] = useState<PoolPropsCard[]>([]);
+  const [pools, setPools] = useState<PoolCardProps[]>([]);
 
   const { navigate } = useNavigation();
   const toast = useToast();
